@@ -12,9 +12,6 @@ File.open('./day1.txt') do |file|
 
       current_elf_cals = 0
     end
-
-
-
   end
 
   puts top_3_elf_cals.sum
