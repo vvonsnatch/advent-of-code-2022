@@ -1,18 +1,27 @@
+def print_stacks(stacks)
+  stacks.each do |stack|
+    puts "#{stack}"
+  end
+  puts
+  puts
+end
 
-FILENAME='day5_sample.txt'
+
+FILENAME='day5.txt'.freeze
 
 lines = File.open(FILENAME).readlines.map(&:chomp)
 
 # find index of line that lists the stacks
-stackIndex = nil
+stackIndexLine = nil
 lines.each_with_index do |line, index|
   if line =~ /(\s+\d)+/
-    stackIndex = index
+    stackIndexLine = index
     break
   end
 end
+puts "STACK INDEX: #{stackIndexLine}"
 
-numStacks = lines[stackIndex].delete(' ').size
+numStacks = lines[stackIndexLine].delete(' ').size
 
 # list of stacks
 stacks = []
@@ -21,7 +30,7 @@ numStacks.times do
 end
 
 # construct stacks
-i = stackIndex - 1
+i = stackIndexLine - 1
 while i >= 0 do
   stackElementIndex = 1
   stackIndex = 0
@@ -34,21 +43,23 @@ while i >= 0 do
   i -= 1
 end
 
+print_stacks(stacks)
+
 # move stack items
-instructions = lines[(stackIndex + 2)...lines.size]
-puts instructions
+instructions = lines[(stackIndexLine + 2)...lines.size]
+instructions.each do |line|
+  splitLine = line.split(" ")
+
+  splitLine[1].to_i.times do
+    el = stacks[splitLine[3].to_i - 1].pop
+    stacks[splitLine[5].to_i - 1] << el
+  end
+
+  puts line
+  print_stacks(stacks)
+end
+
+puts "#{stacks.map { |stack| stack[-1] }.join('')}"
 
 
-
-
-
-puts "#{stacks[0]}"
-puts "#{stacks[1]}"
-puts "#{stacks[2]}"
-puts "#{stacks[3]}"
-puts "#{stacks[4]}"
-puts "#{stacks[5]}"
-puts "#{stacks[6]}"
-puts "#{stacks[7]}"
-puts "#{stacks[8]}"
 
